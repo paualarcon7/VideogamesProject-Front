@@ -1,11 +1,11 @@
 import React from "react";
-import loading from "../styles/img/loading.gif"
-import s from "../styles/Loader.module.css"
+import loading from "../styles/img/loadinggg.gif"
+
 
 const Loader = () => {
     return (
      
-        <div className={s.loading}>
+        <div>
           <img
             src={loading}
             alt="LoadingImage not found"
@@ -16,5 +16,5 @@ const Loader = () => {
       
     );
   };
-  
+   
   export default Loader;

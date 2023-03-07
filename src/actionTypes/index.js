@@ -8,3 +8,4 @@ export const GET_BY_NAME = 'GET_BY_NAME'
 export const POST_VIDEOGAME = 'POST_VIDEOGAME'
 export const GET_DETAILS = 'GET_DETAILS'
 export const CLEAN_DETAILS = 'CLEAN_DETAILS'
+export const LOADING_ACTION = 'LOADING_ACTION';

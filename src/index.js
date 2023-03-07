@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals'; //Mide performance 
 import { Provider } from 'react-redux';//habilita el store para todos los comps
 import { store } from './store'; //estado
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 ReactDOM.render(
     <Provider store={store}>

@@ -9,7 +9,8 @@ import {
   GET_BY_NAME,
   GET_DETAILS,
   POST_VIDEOGAME,
-  CLEAN_DETAILS
+  CLEAN_DETAILS,
+  LOADING_ACTION,
 } from "../actionTypes";
 
 const initialState = {
@@ -17,11 +18,17 @@ const initialState = {
   videogames: [], //estado que se va a ir modif en base al FILTRADO
   allVideogames: [], //estado que SIEMPRE va a tener todos los juegos
   genres: [],
-  detail: []
+  detail: [],
+  showLoading: false,
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
+    case LOADING_ACTION:
+      return {
+        ...state,
+        showLoading: action.payload,
+      };
     case GET_VIDEOGAMES:
       return {
         ...state,
@@ -60,7 +67,7 @@ export default function reducer(state = initialState, action) {
     case FILTER_CREATED:
       const allGames = state.backup;
       const createdFilter =
-        action.payload === "Creados por ti"
+        action.payload === "Created by you"
           ? allGames.filter((g) => g.createdDb)
           : allGames.filter((g) => !g.createdDb);
 
@@ -70,7 +77,7 @@ export default function reducer(state = initialState, action) {
       };
     case ORDER_BY_NAME:
       const sorted =
-        action.payload === "Ascendente A-Z"
+        action.payload === "Ascendent A-Z"
           ? [...state.videogames].sort(function (a, b) {
               if (a.name.toLowerCase() > b.name.toLowerCase()) {
                 return 1;
@@ -95,7 +102,7 @@ export default function reducer(state = initialState, action) {
       };
     case ORDER_BY_RATING:
       const ratingSorted =
-        action.payload === "Mayor Rating"
+        action.payload === "Highest rating"
           ? [...state.videogames].sort(function (a, b) {
               if (a.rating > b.rating) return -1;
               if (b.rating > a.rating) return 1;

@@ -1,0 +1,9 @@
+.pagination{
+    display: flex;
+    justify-content: center;
+}
+
+.pagination .page-link {
+    background-color: rgba(87, 86, 86, 0.923);
+    color: white;
+  }

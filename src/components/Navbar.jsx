@@ -1,11 +1,19 @@
 import React from "react";
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getGenres, filterGenre, filterCreated, orderByName, orderByRating } from "../actions";
-import s from "../styles/Navbar.module.css";
+import {
+  getGenres,
+  filterGenre,
+  filterCreated,
+  orderByName,
+  orderByRating,
+} from "../actions";
 import { Link } from "react-router-dom";
+import Navbar from "react-bootstrap/Navbar";
+import icon from "../icons/joystick.ico";
+import SearchBar from "./SearchBar";
 
-export default function Navbar() {
+export default function Navigationbar({setCurrentPage}) {
   const dispatch = useDispatch();
 
   const genres = useSelector((state) => state.genres);
@@ -16,73 +24,177 @@ export default function Navbar() {
   function handleGenreFilter(e) {
     e.preventDefault();
     dispatch(filterGenre(e.target.innerText));
+    setCurrentPage(1)
   }
 
-  function handleCreatedFilter(e){
+  function handleCreatedFilter(e) {
     e.preventDefault();
-    dispatch(filterCreated(e.target.innerText))
-  }
-  
-
-
-  function handleSortByName(e){
-    
-    dispatch(orderByName(e.target.innerText))
-    
+    dispatch(filterCreated(e.target.innerText));
+    setCurrentPage(1)
   }
 
-  function handleSortByRating(e){
-    dispatch(orderByRating(e.target.innerText))
+  function handleSortByName(e) {
+    dispatch(orderByName(e.target.innerText));
+    setCurrentPage(1)
+  }
+
+  function handleSortByRating(e) {
+    dispatch(orderByRating(e.target.innerText));
+    setCurrentPage(1)
   }
 
   return (
-    <div className={s.dropdown}>
-      <nav>
-        <a href="/home">
-          <img class={s.logo} src="pacman-banner.jpg" alt="pacman banner"/>
-        </a>
-        <ul>
-          <li key="home">
-            <a href="/home" class={s.principalFont}>
-              Home
+  <div className="divStyle"> 
+    <nav class="navbar navbar-expand-lg bg-light">
+      <a class="navbar-brand">
+        <img src={icon} width="45" height="40" alt="" style={{marginLeft:"20px"}}/>{" "}
+      </a>
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/home">
+              Home <span class="sr-only">(current)</span>
             </a>
           </li>
-          <li key="genres">
-            <a href="#" class={s.principalFont}>
-              Generos
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Order by
             </a>
-            <ul class={s.secondaryFont}>
+
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a
+                key="asc"
+                class="dropdown-item"
+                href="#"
+                onClick={(e) => handleSortByName(e)}
+              >
+                Ascendent A-Z
+              </a>
+              <div class="dropdown-divider"></div>
+              <a
+                key="desc"
+                class="dropdown-item"
+                href="#"
+                onClick={(e) => handleSortByName(e)}
+              >
+                Descendent Z-A
+              </a>
+
+              <div class="dropdown-divider"></div>
+              <a
+                class="dropdown-item"
+                href="#"
+                key="+"
+                onClick={(e) => handleSortByRating(e)}
+              >
+                Highest rating
+              </a>
+
+              <div class="dropdown-divider"></div>
+              <a
+                class="dropdown-item"
+                href="#"
+                key="-"
+                onClick={(e) => handleSortByRating(e)}
+              >
+                Lower rating
+              </a>
+            </div>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Genres
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               {genres.map((g) => {
-                return <li key={g.name} onClick={(e) => handleGenreFilter(e)}>{g.name}</li>;
+                return (
+                  <>
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      key={g.name}
+                      onClick={(e) => handleGenreFilter(e)}
+                    >
+                      {g.name}
+                    </a>
+                    <div class="dropdown-divider"></div>
+                  </>
+                );
               })}
-            </ul>
+            </div>
           </li>
-          <li key="order">
-            <a href="#" class={s.principalFont}>
-              Orden
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Your games
             </a>
-            <ul class={s.secondaryFont}>
-              <li key="asc" onClick={(e) => handleSortByName(e)}>Ascendente A-Z</li>
-              <hr />
-              <li key="desc" onClick={(e) => handleSortByName(e)}>Descendente Z-A</li>
-              <hr />
-              <li key="+" onClick={(e) => handleSortByRating(e)}>Mayor Rating</li>
-              <hr />
-              <li key="-" onClick={(e) => handleSortByRating(e)}>Menor Rating</li>
-            </ul>
+
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a
+                key="Created by you"
+                class="dropdown-item"
+                href="#"
+                onClick={(e) => handleCreatedFilter(e)}
+              >
+                Created by you
+              </a>
+              <div class="dropdown-divider"></div>
+              <a
+               class="nav-link" 
+               href="/create" 
+                key="-"
+              >
+                Create one now!
+              </a>
+            </div>
           </li>
-          <li key="yours">
-            <a href="#" class={s.principalFont}>
-              Tus juegos
+          {/* <li class="nav-item">
+            <a class="nav-link" href="/create">
+              Create your own
             </a>
-            <ul class={s.secondaryFont}>
-              <li key="created" onClick={(e) => handleCreatedFilter(e)}>Creados por ti</li>
-             <Link className={s.link} to="/create"><li key="create">Crear nuevo juego</li></Link>
-            </ul>
-          </li>
+          </li> */}
         </ul>
-        
-      </nav>
+        <SearchBar></SearchBar>
+      </div>
+    </nav>
     </div>
+
   );
 }

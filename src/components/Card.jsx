@@ -1,17 +1,21 @@
 import React from "react";
-import s from "../styles/Card.module.css"
+import {Card , Button} from 'react-bootstrap'
+import { Link } from "react-router-dom";
+import '../styles/Card.modules.css'
 
-export default function Card ({image, name, genres}) {
+
+export default function GameCard ({image, name, genres}) {
    
     return (
-        <div className={s.container}>
-            <div className={s.card}>
-            <img src={image} alt=""/>
-            <div className={s.details}>
-            <h1>{name}</h1>
-            <p>{genres}</p>
-            </div>
-            </div>
-        </div>
+      <Card style={{ width: '18rem', boxShadow: ' rgba(0, 0, 0, 0.1) 0px 4px 8px', height: '20rem', color:"black", textDecoration: "none"}} >
+      <Card.Img variant="top" src={image} />
+      <Card.Body className='gameCard'>
+        <Card.Title style={{ fontSize: "20px", textDecoration: "none", color:"whitesmoke"}}>{name}</Card.Title>
+        <Card.Text className="text-center" style={{color:"whitesmoke", textDecoration: "none"}}>
+          {genres}
+        </Card.Text>
+      </Card.Body>
+    </Card>
+
     )
 }

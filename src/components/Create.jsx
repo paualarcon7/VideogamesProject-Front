@@ -2,7 +2,7 @@ import { React, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { getGenres, postVideogame } from "../actions";
-import s from "../styles/Create.module.css";
+import { Badge, Button, Form, Image, InputGroup, Select} from "react-bootstrap";
 
 export default function VideogameCreation() {
   const dispatch = useDispatch();
@@ -56,19 +56,21 @@ export default function VideogameCreation() {
   }
 
   function handleGenreSelect(e) {
+    if (!input.genres.includes(e.target.value)){
     setInput({
       ...input,
       genres: [...input.genres, e.target.value], //concatena en un arreglo el estado input que ya tenia y todo lo que se vaya seleccionando
     });
-    console.log(input);
+    console.log(input);}
   }
 
   function handlePlatformSelect(e) {
+    if (!input.platforms.includes(e.target.value)){
     setInput({
       ...input,
       platforms: [...input.platforms, e.target.value],
     });
-    console.log(input);
+    console.log(input);}
   }
 
   function handleDelete(el) {
@@ -96,65 +98,93 @@ export default function VideogameCreation() {
   }
 
   return (
-    <div className={s.fonts}>
+    <div>
       <Link to="/home">
-        <button>Volver</button>
+        <Button variant="light" style={{marginTop:"20px"}} >Back home</Button>
       </Link>
-      <h1>Crea tu propio juego!</h1>
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <button className={s.createButton} type="submit">
-          {" "}
-          Crear{" "}
-        </button>
+      <h1 style={{color:"white", marginTop:"20px"}}>Create your own videogame!</h1>
 
-        <div className={s.InputDiv}>
-          <label>Imagen:</label>
+      <Form onSubmit={(e) => handleSubmit(e)} style={{width:"50rem", display:"flex", flexDirection:"column", alignItems:"stretch", marginLeft:"35rem", marginTop:"30px", color:"white"}}>
+        <Form.Group controlId="formName">
+          <Form.Label >Name:</Form.Label>
+          <Form.Control
+            type="text"
+            value={input.name}
+            name="name"
+            onChange={(e) => handleOnChange(e)}
+            required
+            style={{width:"50rem"}}
+          />
+          {/* {errors.name && <h3>{errors.name}</h3>} */}
+        </Form.Group>
 
-          <input
+        <Form.Group controlId="formImage">
+          <Form.Label  style={{marginTop:"15px"}}>Image:</Form.Label>
+          <Form.Control
             type="text"
             onChange={(e) => handleOnChange(e)}
             name="image"
             value={input.image}
+            placeholder="enter image URL..."
+            required
           />
-          {errors.image && <h3 className={s.errors}>{errors.image}</h3>}
-        </div>
+          {errors.image && <h3>{errors.image}</h3>}
+        </Form.Group>
 
-        <div className={s.InputDiv}>
-          <label>Fecha (dd/mm/aa):</label>
-
-          <input
+        <Form.Group controlId="formDate">
+          <Form.Label style={{marginTop:"15px"}}>Release date:</Form.Label>
+          <Form.Control
             type="text"
             onChange={(e) => handleOnChange(e)}
             name="released"
             value={input.released}
+            placeholder="YYYY-MM-DD"
+            required
           />
-          {errors.released && <h3 className={s.errors}>{errors.released}</h3>}
-        </div>
+          {errors.released && <h3>{errors.released}</h3>}
+        </Form.Group>
 
-        <div className={s.InputDiv}>
-          <label>Rating:</label>
-          <input
+        <Form.Group controlId="formRating">
+          <Form.Label style={{marginTop:"15px"}}>Rating:</Form.Label>
+          <Form.Control
             type="number"
             value={input.rating}
             name="rating"
+            placeholder="1 - 5"
             onChange={(e) => handleOnChange(e)}
+            required
+            min="1"
+            max="5"
           />
-          {errors.rating && <h3 className={s.errors}>{errors.rating}</h3>}
-        </div>
+          {errors.rating && <h3>{errors.rating}</h3>}
+        </Form.Group>
 
-        <div className={s.InputDiv}>
-          <label>Géneros: </label>
-          <select name="genres" onChange={(e) => handleGenreSelect(e)}>
+        <Form.Group controlId="formRating">
+          <Form.Label style={{marginTop:"15px"}}>Genres:</Form.Label>
+          <Form.Select
+            name="genres"
+            onChange={(e) => handleGenreSelect(e)}
+            value={input.genres}
+          >
             {genres.map((g) => {
-              return <option value={g.name}>{g.name}</option>;
+              return <option value={g.name} key={g.name} disabled={g.name === input.genres}>{g.name}</option>;
             })}
-          </select>
-          {errors.genres && <h3 className={s.errors}>{errors.genres}</h3>}
-        </div>
+          </Form.Select>
+          {errors.genres && <h3>{errors.genres}</h3>}
+        </Form.Group>
+        {input.genres.map((el) => (
+                    <Badge style={{ cursor: 'pointer' }} key={el} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2" onClick={() => handleDelete(el)}>
+                        {el}  X
+                    </Badge>
+                ))}
 
-        <div className={s.InputDiv}>
-          <label>Plataformas: </label>
-          <select name="platforms" onChange={(e) => handlePlatformSelect(e)}>
+        <Form.Group controlId="formRating">
+          <Form.Label style={{marginTop:"15px"}}>Platforms:</Form.Label>
+          <Form.Control
+            name="platforms"
+            as="select"
+            onChange={(e) => handlePlatformSelect(e)}
+          >
             <option value="PC">PC</option>
             <option value="Linux">Linux</option>
             <option value="macOS">macOS</option>
@@ -169,51 +199,31 @@ export default function VideogameCreation() {
             <option value="S/X">Xbox Series S/X</option>
             <option value="Vita">PS Vita</option>
             <option value="Switch">Nintendo Switch</option>
-          </select>
-          {errors.platforms && <h3 className={s.errors}>{errors.platforms}</h3>}
-        </div>
+          </Form.Control>
+          {errors.platforms && <h3>{errors.platforms}</h3>}
+        </Form.Group>
 
-        <div className={s.InputDiv}>
-          <label>Descripción: </label>
-          <input
-            type="text"
+        {input.platforms.map((el) => (
+                    <Badge style={{ cursor: 'pointer' }} key={el} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2" onClick={() => handleDelete(el)}>
+                        {el}  X
+                    </Badge>
+                ))}
+
+        <Form.Group controlId="formRating">
+          <Form.Label style={{marginTop:"15px"}}>Description:</Form.Label>
+          <Form.Control
+            as="textarea"
             value={input.description}
             name="description"
             onChange={(e) => handleOnChange(e)}
+            placeholder='Describe your game here'
           />
-          {errors.description && (
-            <h3 className={s.errors}>{errors.description}</h3>
-          )}
-        </div>
-        <div className={s.InputDiv}>
-          <label>Nombre: </label>
-          <input
-            type="text"
-            value={input.name}
-            name="name"
-            onChange={(e) => handleOnChange(e)}
-          />
-          {errors.name && <h3 className={s.errors}>{errors.name}</h3>}
-        </div>
-      </form>
+          {errors.description && <h3>{errors.description}</h3>}
+          </Form.Group>
 
-      {input.genres.map((el) => (
-        <div>
-          <h3 className={s.delete}>{el}</h3>
-          <button className={s.buttonX} onClick={() => handleDelete(el)}>
-            x
-          </button>
-        </div>
-      ))}
+        <Button type="submit" variant="light" style={{marginTop:"20px"}}>Create</Button>
 
-      {input.platforms.map((el) => (
-        <div>
-          <h3 className={s.delete}>{el}</h3>
-          <button className={s.buttonX} onClick={() => handleDelete(el)}>
-            x
-          </button>
-        </div>
-      ))}
+      </Form>
     </div>
   );
 }

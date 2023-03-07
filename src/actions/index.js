@@ -9,8 +9,16 @@ import {
   GET_BY_NAME,
   POST_VIDEOGAME,
   GET_DETAILS,
-  CLEAN_DETAILS 
+  CLEAN_DETAILS,
+  LOADING_ACTION 
 } from "../actionTypes";
+
+export function loadingAction(payload) {
+  return {
+    type: LOADING_ACTION,
+    payload,
+  };
+}
 
 export function getVideogames() {
   return async function (dispatch) {
@@ -18,7 +26,8 @@ export function getVideogames() {
     return dispatch({
       type: GET_VIDEOGAMES,
       payload: json.data,
-    });
+    }), 
+    dispatch(loadingAction(false))
   };
 }
 
@@ -36,28 +45,28 @@ export function filterGenre(payload) {
   return {
     type: FILTER_GENRE,
     payload,
-  };
+  }
 }
 
 export function filterCreated(payload) {
   return {
     type: FILTER_CREATED,
     payload,
-  };
+  }
 }
 
 export function orderByName(payload) {
   return {
     type: ORDER_BY_NAME,
     payload,
-  };
+  }
 }
 
 export function orderByRating(payload) {
   return {
     type: ORDER_BY_RATING,
     payload,
-  };
+  }
 }
 
 export function getByName(name) {
@@ -69,9 +78,9 @@ export function getByName(name) {
       return dispatch({
         type: GET_BY_NAME,
         payload: json.data,
-      });
+      }), dispatch(loadingAction(false))
     } catch (error) {
-      alert("No pudimos encontrar el juego indicado :(")
+      alert("We couldn't find the specified game :(")
     }
   };
 }
@@ -85,9 +94,10 @@ export function postVideogame(payload) {
     return dispatch({
       type: POST_VIDEOGAME,
       payload: data,
-    });
+    }), dispatch(loadingAction(false)), alert("Game successfully created!")
+    
   }catch (error) {
-    alert("UPS algo salió mal, asegúrate de completar todos los campos")
+    alert("UPS something went wrong, please complete all fields")
   }
 }
 }
@@ -98,7 +108,7 @@ export function getDetail(id) {
     return dispatch({
       type: GET_DETAILS,
       payload: data.data,
-    });
+    }), dispatch(loadingAction(false))
   };
 }
 
