@@ -22,7 +22,7 @@ export function loadingAction(payload) {
 
 export function getVideogames() {
   return async function (dispatch) {
-    var json = await axios.get("http://localhost:3001/videogames");
+    var json = await axios.get("https://pi-videogames-back-henry-production.up.railway.app/videogames");
     return dispatch({
       type: GET_VIDEOGAMES,
       payload: json.data,
@@ -33,7 +33,7 @@ export function getVideogames() {
 
 export function getGenres() {
   return async function (dispatch) {
-    var json = await axios.get("http://localhost:3001/genres");
+    var json = await axios.get("https://pi-videogames-back-henry-production.up.railway.app/genres");
     return dispatch({
       type: GET_GENRES,
       payload: json.data,
@@ -73,7 +73,7 @@ export function getByName(name) {
   return async function (dispatch) {
     try {
       var json = await axios.get(
-        `http://localhost:3001/videogames?name=${name}`
+        `https://pi-videogames-back-henry-production.up.railway.app/videogames?name=${name}`
       );
       return dispatch({
         type: GET_BY_NAME,
@@ -88,9 +88,8 @@ export function getByName(name) {
 export function postVideogame(payload) {
   return async function (dispatch) {
     try {
-        var data = await axios.post("http://localhost:3001/videogames", payload);
-    console.log("data: ", data);
-    console.log("soy el payload: ", payload);
+        var data = await axios.post("https://pi-videogames-back-henry-production.up.railway.app/videogames", payload);
+    
     return dispatch({
       type: POST_VIDEOGAME,
       payload: data,
@@ -104,7 +103,7 @@ export function postVideogame(payload) {
 
 export function getDetail(id) {
   return async function (dispatch) {
-    var data = await axios.get("http://localhost:3001/videogames/" + id);
+    var data = await axios.get("https://pi-videogames-back-henry-production.up.railway.app/videogames/" + id);
     return dispatch({
       type: GET_DETAILS,
       payload: data.data,
