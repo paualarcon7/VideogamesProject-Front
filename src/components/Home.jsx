@@ -14,6 +14,7 @@ export default function Home() {
   const dispatch = useDispatch();
   const allVideogames = useSelector((state) => state.videogames);
   const showLoading = useSelector((state) => state.showLoading);
+  const showSearchLoading = useSelector((state) => state.showSearchLoading);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [gamesPerPage, setGamesPerPage] = useState(8);
@@ -40,7 +41,7 @@ export default function Home() {
   return (
     <React.Fragment>
       <Navbar setCurrentPage={setCurrentPage} />
-      {showLoading ? (
+      {showLoading || showSearchLoading ? (
         <Loader />
       ) : (
         <div className="Cards container col mt-4 py-5">
@@ -79,27 +80,6 @@ export default function Home() {
         className={s}
       />
 
-      {/* { allVideogames.length > 0 ?
-          ({currentGames?.map((el) => {
-            return (
-              <div className={s.card}>
-                <Link to={"/home/" + el.id}>
-                  <Card
-                    name={el.name}
-                    image={el.image}
-                    genres={el.genres.map((g) => {
-                      return `${g.name} `;
-                    })}
-                    key={el.id}
-                  ></Card>
-                </Link> }) : (
-               <div>
-                  <Loader />
-               </div>
-            )
-              </div> 
-            );
-          })}  */}
     </React.Fragment>
   );
 }

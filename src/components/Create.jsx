@@ -83,18 +83,23 @@ export default function VideogameCreation() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    dispatch(postVideogame(input));
-    alert("Estamos procesando tu juego...");
-    setInput({
-      name: "",
-      genres: [],
-      description: "",
-      platforms: [],
-      released: "",
-      rating: "",
-      image: "",
-    });
-    history.push("/home");
+    const errors = validate(input);
+    setErrors(errors);
+    if (Object.keys(errors).length === 0) {
+      dispatch(postVideogame(input));
+      setInput({
+        name: "",
+        genres: [],
+        description: "",
+        platforms: [],
+        released: "",
+        rating: "",
+        image: "",
+      });
+      history.push("/home");
+    }else {
+      alert("Please fill out all required fields");
+    }
   }
 
   return (
@@ -165,7 +170,9 @@ export default function VideogameCreation() {
             name="genres"
             onChange={(e) => handleGenreSelect(e)}
             value={input.genres}
+            required
           >
+            <option>Select an option...</option>
             {genres.map((g) => {
               return <option value={g.name} key={g.name} disabled={g.name === input.genres}>{g.name}</option>;
             })}
@@ -184,7 +191,10 @@ export default function VideogameCreation() {
             name="platforms"
             as="select"
             onChange={(e) => handlePlatformSelect(e)}
+            required
           >
+            
+            <option>Select a platform...</option>
             <option value="PC">PC</option>
             <option value="Linux">Linux</option>
             <option value="macOS">macOS</option>
@@ -194,11 +204,11 @@ export default function VideogameCreation() {
             <option value="PS3">PlayStation 3</option>
             <option value="PS4">PlayStation 4</option>
             <option value="PS5">PlayStation 5</option>
-            <option value="XOne">Xbox One</option>
-            <option value="360">Xbox 360</option>
-            <option value="S/X">Xbox Series S/X</option>
-            <option value="Vita">PS Vita</option>
-            <option value="Switch">Nintendo Switch</option>
+            <option value="Xbox One">Xbox One</option>
+            <option value="Xbox 360">Xbox 360</option>
+            <option value="Xbox Series S/X">Xbox Series S/X</option>
+            <option value="PS Vita">PS Vita</option>
+            <option value="Nintendo Switch">Nintendo Switch</option>
           </Form.Control>
           {errors.platforms && <h3>{errors.platforms}</h3>}
         </Form.Group>
@@ -217,6 +227,7 @@ export default function VideogameCreation() {
             name="description"
             onChange={(e) => handleOnChange(e)}
             placeholder='Describe your game here'
+            required
           />
           {errors.description && <h3>{errors.description}</h3>}
           </Form.Group>
