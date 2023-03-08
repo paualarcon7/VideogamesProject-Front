@@ -65,7 +65,7 @@ export default function Home() {
               })}
             </>
           ) : (
-            <div>NOT FOUND</div>
+            <div style={{color:"white"}}>NOT FOUND</div>
           )}
         </div>
       )}
