@@ -2,8 +2,9 @@ import { React, useState } from "react";
 import Autosuggest from 'react-autosuggest'
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getByName, loadingAction } from "../actions";
+import { getByName, loadingAction, searchLoadingAction } from "../actions";
 import '../styles/SearchBar.modules.css'
+import Loader from "./Loader";
 
 export default function SearchBar() {
 
@@ -11,9 +12,7 @@ export default function SearchBar() {
   const [name, setName] = useState("");
   const [selection, setSelection]= useState([]);
 
-
   
-  const showLoading = useSelector((state) => state.showLoading);
   const allVideogames = useSelector((state) => state.videogames);
 
   const dispatch = useDispatch();
@@ -62,6 +61,7 @@ export default function SearchBar() {
     };
 
     const handleClick = (game) => {
+      dispatch(searchLoadingAction(true))
       dispatch(getByName(game))
       setName('')
   }
@@ -78,6 +78,7 @@ export default function SearchBar() {
   return (
 
     <div style={{ display: "flex", justifyContent:"end", marginRight:"20px"}}>
+      
             <Autosuggest 
             suggestions={gamesFiltered}
             onSuggestionsFetchRequested={onSuggestionsFetchRequested}
@@ -90,24 +91,9 @@ export default function SearchBar() {
             />
             <Button
           variant="dark" style={{marginLeft:"15rem"}} onClick={()=>handleClick(name)}>Search</Button>
+          
         </div>
 
         );
       }
       
-      /* <div style={{marginRight:"20px"}}>
-        <input
-          type="text"
-          placeholder=" Search..."
-          onChange={(e) => handleInput(e)}
-          style={{borderRadius:"10px", height:"40px"}}
-        />
-        <Button
-          type="submit"
-          onClick={(e) => handleSubmit(e)}
-          style={{marginLeft:"10px"}}
-          variant="dark"
-        >
-          Search
-        </Button>
-      </div> */

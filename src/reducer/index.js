@@ -11,6 +11,7 @@ import {
   POST_VIDEOGAME,
   CLEAN_DETAILS,
   LOADING_ACTION,
+  SEARCH_LOADING,
 } from "../actionTypes";
 
 const initialState = {
@@ -20,6 +21,7 @@ const initialState = {
   genres: [],
   detail: [],
   showLoading: false,
+  showSearchLoading: false,
 };
 
 export default function reducer(state = initialState, action) {
@@ -28,6 +30,11 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         showLoading: action.payload,
+      };
+      case SEARCH_LOADING:
+      return {
+        ...state,
+        showSearchLoading: action.payload,
       };
     case GET_VIDEOGAMES:
       return {

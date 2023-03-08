@@ -12,8 +12,12 @@ import { Link } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import icon from "../icons/joystick.ico";
 import SearchBar from "./SearchBar";
+import Loader from "./Loader";
 
 export default function Navigationbar({setCurrentPage}) {
+
+  const showLoading = useSelector((state) => state.showLoading);
+
   const dispatch = useDispatch();
 
   const genres = useSelector((state) => state.genres);
@@ -194,6 +198,7 @@ export default function Navigationbar({setCurrentPage}) {
         <SearchBar></SearchBar>
       </div>
     </nav>
+    {/* {showLoading && <Loader />} */}
     </div>
 
   );

@@ -10,7 +10,8 @@ import {
   POST_VIDEOGAME,
   GET_DETAILS,
   CLEAN_DETAILS,
-  LOADING_ACTION 
+  LOADING_ACTION,
+  SEARCH_LOADING 
 } from "../actionTypes";
 
 export function loadingAction(payload) {
@@ -19,6 +20,13 @@ export function loadingAction(payload) {
     payload,
   };
 }
+
+export function searchLoadingAction(payload){
+  return {
+  type: SEARCH_LOADING,
+  payload
+}
+};
 
 export function getVideogames() {
   return async function (dispatch) {
@@ -78,7 +86,7 @@ export function getByName(name) {
       return dispatch({
         type: GET_BY_NAME,
         payload: json.data,
-      }), dispatch(loadingAction(false))
+      }), dispatch(searchLoadingAction(false))
     } catch (error) {
       alert("We couldn't find the specified game :(")
     }
@@ -88,13 +96,17 @@ export function getByName(name) {
 export function postVideogame(payload) {
   return async function (dispatch) {
     try {
+      if(payload.genres.length === 0 || payload.platforms.length === 0) {
+        alert("Genres and Platforms selects are obligatory!")
+        return window.location.reload();
+      }else {
         var data = await axios.post("https://pi-videogames-back-henry-production.up.railway.app/videogames", payload);
     
     return dispatch({
       type: POST_VIDEOGAME,
       payload: data,
     }), dispatch(loadingAction(false)), alert("Game successfully created!")
-    
+    }
   }catch (error) {
     alert("UPS something went wrong, please complete all fields")
   }
